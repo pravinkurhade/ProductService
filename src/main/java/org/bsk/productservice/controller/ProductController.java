@@ -2,6 +2,7 @@ package org.bsk.productservice.controller;
 
 import org.bsk.productservice.dto.ProductDTO;
 import org.bsk.productservice.entity.Product;
+import org.bsk.productservice.exceptions.entity_exception.ApiResponseExceptionHandler;
 import org.bsk.productservice.service.ProductService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
