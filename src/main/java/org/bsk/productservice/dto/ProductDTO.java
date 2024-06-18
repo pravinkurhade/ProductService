@@ -2,7 +2,7 @@ package org.bsk.productservice.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bsk.productservice.model.Product;
+import org.bsk.productservice.entity.Product;
 
 @Getter
 @Setter

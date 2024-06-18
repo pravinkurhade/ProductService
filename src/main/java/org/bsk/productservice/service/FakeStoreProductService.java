@@ -1,7 +1,7 @@
 package org.bsk.productservice.service;
 
 import org.bsk.productservice.dto.ProductDTO;
-import org.bsk.productservice.model.Product;
+import org.bsk.productservice.entity.Product;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

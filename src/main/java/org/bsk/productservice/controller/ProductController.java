@@ -1,11 +1,13 @@
 package org.bsk.productservice.controller;
 
 import org.bsk.productservice.dto.ProductDTO;
-import org.bsk.productservice.model.Product;
+import org.bsk.productservice.entity.Product;
 import org.bsk.productservice.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,8 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public Product getProduct(@PathVariable("id") Long id) {
-        return productService.getProductById(id).toProduct();
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(productService.getProductById(id).toProduct(), HttpStatus.OK);
     }
 
     @PostMapping("/products")

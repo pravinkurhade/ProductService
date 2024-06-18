@@ -1,4 +1,4 @@
-package org.bsk.productservice.model;
+package org.bsk.productservice.entity;
 
 import lombok.Getter;
 import lombok.Setter;
