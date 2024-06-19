@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Objects;
 
-@Service
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService {
 
     RestTemplate restTemplate;
@@ -31,25 +31,25 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public ProductDTO addProduct(Product product) {
+    public ProductDTO addProduct(ProductDTO product) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Product> request = new HttpEntity<>(product);
+        HttpEntity<ProductDTO> request = new HttpEntity<>(product);
         return restTemplate.exchange(baseUrl, HttpMethod.POST, request, ProductDTO.class).getBody();
     }
 
     @Override
-    public ProductDTO updateProduct(Long id, Product product) {
+    public ProductDTO updateProduct(Long id, ProductDTO product) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<Product> requestUpdate = new HttpEntity<>(product, headers);
+        HttpEntity<ProductDTO> requestUpdate = new HttpEntity<>(product, headers);
         return restTemplate.exchange(baseUrl + id, HttpMethod.PUT, requestUpdate, ProductDTO.class).getBody();
     }
 
     @Override
-    public ProductDTO deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        return restTemplate.exchange(baseUrl + id, HttpMethod.DELETE, new HttpEntity<>(null, headers), ProductDTO.class).getBody();
+        restTemplate.exchange(baseUrl + id, HttpMethod.DELETE, new HttpEntity<>(null, headers), ProductDTO.class).getBody();
     }
 
     @Override
