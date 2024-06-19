@@ -4,6 +4,7 @@ import org.bsk.productservice.dto.ProductDTO;
 import org.bsk.productservice.entity.Product;
 import org.bsk.productservice.exceptions.entity_exception.ApiResponseExceptionHandler;
 import org.bsk.productservice.service.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ProductController {
 
     ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(@Qualifier("selfProductService") ProductService productService) {
         this.productService = productService;
     }
 
@@ -27,7 +28,7 @@ public class ProductController {
     public HttpEntity<List<Product>> getAllProducts(@RequestParam(required = false) String sort, @RequestParam(required = false) Long limit) {
         List<Product> products = productService.getAllProducts(sort, limit).stream().map(ProductDTO::toProduct).toList();
         if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
@@ -41,7 +42,7 @@ public class ProductController {
     @PostMapping("/products")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         try {
-            productService.addProduct(product).toProduct();
+            productService.addProduct(product.toProductDto()).toProduct();
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -54,7 +55,7 @@ public class ProductController {
         Optional<ProductDTO> product1 = Optional.ofNullable(productService.getProductById(id));
         if(product1.isPresent()) {
             try {
-                productService.updateProduct(id, product).toProduct();
+                productService.updateProduct(id, product.toProductDto()).toProduct();
             }catch (Exception e){
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -72,7 +73,7 @@ public class ProductController {
                 productService.deleteProduct(id);
             }catch (Exception e){
                 e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -83,7 +84,7 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("category") String category) {
         List<Product> products = productService.getProductsByCategory(category).stream().map(ProductDTO::toProduct).toList();
         if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
@@ -92,7 +93,7 @@ public class ProductController {
     public ResponseEntity<List<String>> getAllCategories() {
         List<String> products = productService.getAllCategories();
         if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
