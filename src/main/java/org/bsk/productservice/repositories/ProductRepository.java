@@ -11,6 +11,7 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Long> {
     @Query("select distinct category from ProductDTO")
     List<String> findAllCategories();
 
-    @Query(value = "select * from ProductDTO where category = ?1", nativeQuery = true)
+    @Query("select P from ProductDTO P where P.category = :category")
     List<ProductDTO> findAllProductsByCategory(String category);
+
 }
