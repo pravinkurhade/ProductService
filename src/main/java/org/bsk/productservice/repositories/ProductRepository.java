@@ -13,4 +13,5 @@ public interface ProductRepository extends JpaRepository<ProductDTO, Long> {
 
     @Query("select P from ProductDTO P where P.category = :category")
     List<ProductDTO> findAllProductsByCategory(String category);
+
 }
